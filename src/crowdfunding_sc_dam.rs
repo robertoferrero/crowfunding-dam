@@ -17,9 +17,11 @@ pub enum Status {
 #[multiversx_sc::contract]
 pub trait CrowdfundingScDAM {
     #[init]
-    fn init(&self, target: BigUint, deadline: u64) {
-        require!(target > 0, "L'objectiu ha de ser superior a 0 EGLD");
-        self.target().set(target);
+    fn init(&self, target_max: BigUint,target_min: BigUint, deadline: u64) {
+        require!(target_max > 0 && target_min > 0, "L'objectiu ha de ser superior a 0 EGLD");
+        require!(target_max > target_min , "L'objectiu màxim ha de ser superior a l'objectiu mínim");
+        self.target_max().set(target_max);
+        self.target_min().set(target_min);
 
         require!(
             deadline > self.get_current_time(),
@@ -28,13 +30,17 @@ pub trait CrowdfundingScDAM {
         self.deadline().set(deadline);
     }
 
+    /*
     #[upgrade]
-    fn upgrade(&self, new_cap: BigUint) {
+    fn upgrade_target(&self, new_cap: BigUint) {
         require!(new_cap > self.total_raised().get(), 
         "El nou objectiu ha de ser superior a la quantitat acumulada actual!"
         );
-        self.max_cap().set(&new_cap);
-    }
+        self.target().set(&new_cap);
+    }*/
+
+    #[upgrade]
+    fn upgrade_target(&self) {}
 
     #[endpoint]
     #[payable("EGLD")]
@@ -82,7 +88,7 @@ pub trait CrowdfundingScDAM {
     fn status(&self) -> Status {
         if self.get_current_time() <= self.deadline().get() {
             Status::FundingPeriod
-        } else if self.get_current_funds() >= self.target().get() {
+        } else if self.get_current_funds() >= self.target_min().get() {
             Status::Successful
         } else {
             Status::Failed
@@ -96,16 +102,19 @@ pub trait CrowdfundingScDAM {
     }
 
     // private
-
     fn get_current_time(&self) -> u64 {
         self.blockchain().get_block_timestamp()
     }
 
     // storage
 
-    #[view(getTarget)]
-    #[storage_mapper("target")]
-    fn target(&self) -> SingleValueMapper<BigUint>;
+    #[view(getTargetMax)]
+    #[storage_mapper("target_max")]
+    fn target_max(&self) -> SingleValueMapper<BigUint>;
+
+    #[view(getTargetMin)]
+    #[storage_mapper("target_min")]
+    fn target_min(&self) -> SingleValueMapper<BigUint>;
 
     #[view(getDeadline)]
     #[storage_mapper("deadline")]
@@ -115,9 +124,5 @@ pub trait CrowdfundingScDAM {
     #[storage_mapper("deposit")]
     fn deposit(&self, donor: &ManagedAddress) -> SingleValueMapper<BigUint>;
 
-    #[storage_mapper("map_cap")]
-    fn max_cap(&self) -> SingleValueMapper<BigUint>;
 
-    #[storage_mapper("total_raised")]
-    fn total_raised(&self) -> SingleValueMapper<BigUint>;
 }

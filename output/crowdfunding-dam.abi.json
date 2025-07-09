@@ -23,7 +23,11 @@
     "constructor": {
         "inputs": [
             {
-                "name": "target",
+                "name": "target_max",
+                "type": "BigUint"
+            },
+            {
+                "name": "target_min",
                 "type": "BigUint"
             },
             {
@@ -34,12 +38,7 @@
         "outputs": []
     },
     "upgradeConstructor": {
-        "inputs": [
-            {
-                "name": "new_cap",
-                "type": "BigUint"
-            }
-        ],
+        "inputs": [],
         "outputs": []
     },
     "endpoints": [
@@ -79,7 +78,17 @@
             ]
         },
         {
-            "name": "getTarget",
+            "name": "getTargetMax",
+            "mutability": "readonly",
+            "inputs": [],
+            "outputs": [
+                {
+                    "type": "BigUint"
+                }
+            ]
+        },
+        {
+            "name": "getTargetMin",
             "mutability": "readonly",
             "inputs": [],
             "outputs": [
