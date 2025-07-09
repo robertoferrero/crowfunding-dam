@@ -1,0 +1,138 @@
+{
+    "buildInfo": {
+        "rustc": {
+            "version": "1.87.0",
+            "commitHash": "17067e9ac6d7ecb70e50f92c1944e545188d2359",
+            "commitDate": "2025-05-09",
+            "channel": "Stable",
+            "short": "rustc 1.87.0 (17067e9ac 2025-05-09)"
+        },
+        "contractCrate": {
+            "name": "crowdfunding-dam",
+            "version": "0.0.0"
+        },
+        "framework": {
+            "name": "multiversx-sc",
+            "version": "0.58.0"
+        }
+    },
+    "docs": [
+        "An empty contract. To be used as a template when starting a new contract from scratch."
+    ],
+    "name": "CrowdfundingScDAM",
+    "constructor": {
+        "inputs": [
+            {
+                "name": "target",
+                "type": "BigUint"
+            },
+            {
+                "name": "deadline",
+                "type": "u64"
+            }
+        ],
+        "outputs": []
+    },
+    "upgradeConstructor": {
+        "inputs": [
+            {
+                "name": "new_cap",
+                "type": "BigUint"
+            }
+        ],
+        "outputs": []
+    },
+    "endpoints": [
+        {
+            "name": "fund",
+            "mutability": "mutable",
+            "payableInTokens": [
+                "EGLD"
+            ],
+            "inputs": [],
+            "outputs": []
+        },
+        {
+            "name": "claim",
+            "mutability": "mutable",
+            "inputs": [],
+            "outputs": []
+        },
+        {
+            "name": "status",
+            "mutability": "readonly",
+            "inputs": [],
+            "outputs": [
+                {
+                    "type": "Status"
+                }
+            ]
+        },
+        {
+            "name": "getCurrentFunds",
+            "mutability": "readonly",
+            "inputs": [],
+            "outputs": [
+                {
+                    "type": "BigUint"
+                }
+            ]
+        },
+        {
+            "name": "getTarget",
+            "mutability": "readonly",
+            "inputs": [],
+            "outputs": [
+                {
+                    "type": "BigUint"
+                }
+            ]
+        },
+        {
+            "name": "getDeadline",
+            "mutability": "readonly",
+            "inputs": [],
+            "outputs": [
+                {
+                    "type": "u64"
+                }
+            ]
+        },
+        {
+            "name": "getDeposit",
+            "mutability": "readonly",
+            "inputs": [
+                {
+                    "name": "donor",
+                    "type": "Address"
+                }
+            ],
+            "outputs": [
+                {
+                    "type": "BigUint"
+                }
+            ]
+        }
+    ],
+    "esdtAttributes": [],
+    "hasCallback": false,
+    "types": {
+        "Status": {
+            "type": "enum",
+            "variants": [
+                {
+                    "name": "FundingPeriod",
+                    "discriminant": 0
+                },
+                {
+                    "name": "Successful",
+                    "discriminant": 1
+                },
+                {
+                    "name": "Failed",
+                    "discriminant": 2
+                }
+            ]
+        }
+    }
+}

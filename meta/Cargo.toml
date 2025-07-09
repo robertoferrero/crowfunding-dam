@@ -1,0 +1,12 @@
+[package]
+name = "crowdfunding-dam-meta"
+version = "0.0.0"
+edition = "2021"
+publish = false
+
+[dependencies.crowdfunding-dam]
+path = ".."
+
+[dependencies.multiversx-sc-meta-lib]
+version = "0.58.0"
+default-features = false
