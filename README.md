@@ -1,1 +1,2 @@
+
 Adreça del wallet: erd18g3za83pfsdar5qzhlcj8ptmd6ggg9wkgxk5jnqnqrums8uhj6aqhx5zhu
